@@ -17,6 +17,10 @@ point_count = 2
 [node name="Sheep" type="Area2D" unique_id=2046758380]
 script = ExtResource("1_q7b17")
 
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1491422754]
+position = Vector2(0, -5)
+shape = SubResource("RectangleShape2D_eae6q")
+
 [node name="Feet01" type="Node2D" parent="." unique_id=1466487091]
 position = Vector2(-4, 0)
 
@@ -49,14 +53,10 @@ position = Vector2(4, 0)
 position = Vector2(6, -7)
 
 [node name="Head" type="Node2D" parent="." unique_id=1114390035]
-position = Vector2(6, -7)
+position = Vector2(5, -7)
 
 [node name="Sprite2D" type="Sprite2D" parent="Head" unique_id=1040605838]
 texture = ExtResource("2_q7b17")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1491422754]
-position = Vector2(0, -5)
-shape = SubResource("RectangleShape2D_eae6q")
 
 [node name="Particles" type="CPUParticles2D" parent="." unique_id=1664853699]
 position = Vector2(0, -5)
@@ -71,6 +71,11 @@ emission_rect_extents = Vector2(30, 30)
 angular_velocity_max = 720.0
 scale_amount_max = 3.0
 scale_amount_curve = SubResource("Curve_eae6q")
+
+[node name="NavigationAgent2D" type="NavigationAgent2D" parent="." unique_id=2130572292]
+
+[node name="WalkTimer" type="Timer" parent="." unique_id=1289746841]
+autostart = true
 
 [connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
 [connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]
