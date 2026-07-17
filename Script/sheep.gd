@@ -6,30 +6,66 @@ extends Area2D
 @onready var feet_01: Node2D = $Feet01
 @onready var feet_02: Node2D = $Feet02
 @onready var head: Node2D = $Head
+@onready var head_sprite: Sprite2D = $Head/Sprite2D
+
+@onready var particles: CPUParticles2D = $Particles
 
 @onready var collision_shape: CollisionShape2D = $CollisionShape2D
 
 var mouse_on: bool = false
 var can_shear: bool = true
+var speed_factor: float = 1.0
+var elastic_limit: float = 3.0
+var plastic_limit: float = 4.0
+
+var timing_head_idle: float = 0.0
+
 var tween: Tween
+var rng: RandomNumberGenerator
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	pass # Replace with function body.
-
+	rng = RandomNumberGenerator.new()
+	speed_factor = rng.randf_range(2.0, 5.0)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	# Agrandir Wool
-	wool.scale += Vector2.ONE * delta / 5.0
-	#Agrandir la collision shape
-	collision_shape.scale += Vector2.ONE * delta / 5.0
-	collision_shape.global_position = wool_sprite.global_position
+	if can_shear:
+		var scaling: float = delta / speed_factor
+		wool.scale += Vector2.ONE * scaling
+		collision_shape.scale += Vector2.ONE * scaling
+		collision_shape.global_position = wool_sprite.global_position
+		if wool.scale.x >= elastic_limit:
+			wool.position = lerp(wool.position, Vector2(rng.randf_range(-1, 1), 0) * wool.scale.x, 0.1)
+		else:
+			timing_head_idle += delta
+			if timing_head_idle >= 0.5:
+				timing_head_idle = 0.0
+				if head_sprite.position.y == 0:
+					head_sprite.position.y = 1
+				else:
+					head_sprite.position.y = 0
+
+		if wool.scale.x >= plastic_limit:
+			clear_wool()
+			wool.visible = false
+			feet_01.visible = false
+			feet_02.visible = false
+			head.visible = false
+			collision_shape.visible = false
+			particles.emitting = true
+
 
 func _input(event):
 	if mouse_on and can_shear and event is InputEventMouseButton and event.button_index == MouseButton.MOUSE_BUTTON_LEFT:
-		print("BEEEEEH")
-		can_shear = false
+		clear_wool()
+
+func clear_wool():
+	can_shear = false
+	wool.scale = Vector2.ONE
+	collision_shape.scale = Vector2.ONE
+	collision_shape.global_position = wool_sprite.global_position
+	wool_sprite.region_rect = Rect2(16, 0, 16, 16)
 
 func _on_mouse_entered():
 	mouse_on = true
