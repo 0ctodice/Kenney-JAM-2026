@@ -1,4 +1,5 @@
 extends Area2D
+class_name Sheep
 
 @onready var wool: Node2D = $Wool
 @onready var wool_sprite: Sprite2D = $Wool/WoolSprite
@@ -18,6 +19,7 @@ extends Area2D
 var mouse_on: bool = false
 var can_shear: bool = true
 var can_walk: bool = true
+var just_birth: bool = false
 var speed_factor: float = 1.0
 var elastic_limit: float = 3.0
 var plastic_limit: float = 4.0
@@ -37,12 +39,16 @@ func _ready():
 	set_random_target()
 	walk_timer.timeout.connect(func(): can_walk = true)
 
-	finish_point_a = $"/root/World/FinishPointA".global_position
-	finish_point_b = $"/root/World/FinishPointB".global_position
-	
+	if rng.randf() <= 0.5:
+		finish_point_a = $"/root/World/FinishPointA".global_position
+		finish_point_b = $"/root/World/FinishPointB".global_position
+	else:
+		finish_point_a = $"/root/World/FinishPointC".global_position
+		finish_point_b = $"/root/World/FinishPointD".global_position
+		
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	if can_shear:
+	if can_shear and not just_birth:
 		var scaling: float = delta / speed_factor
 		wool.scale += Vector2.ONE * scaling
 		collision_shape.scale += Vector2.ONE * scaling
@@ -70,21 +76,25 @@ func _process(delta):
 	
 		if can_shear:
 			if !nav_agent.is_target_reachable() or nav_agent.is_target_reached():
+				if just_birth:
+					just_birth = false
 				set_random_target()
 				can_walk = false
 				walk_timer.start(rng.randf_range(0.5, 2.0))
 		else:
 			if nav_agent.is_target_reached():
 				if nav_agent.target_position == finish_point_a:
-					nav_agent.target_position = finish_point_b
-				elif nav_agent.target_position == finish_point_b:
-					print("THE SHEEP IS FUCKING")
+					if not just_birth:
+						nav_agent.target_position = finish_point_b
+					else:
+						set_random_target()
+						can_shear = true
 					
 		if !nav_agent.is_target_reached() and can_walk:
-			global_position = lerp(global_position, nav_agent.get_next_path_position(), 0.002 if can_shear else 0.005)
+			global_position = lerp(global_position, nav_agent.get_next_path_position(), 0.005)
 
 func _input(event):
-	if mouse_on and can_shear and event is InputEventMouseButton and event.button_index == MouseButton.MOUSE_BUTTON_LEFT:
+	if mouse_on and can_shear and not just_birth and event is InputEventMouseButton and event.button_index == MouseButton.MOUSE_BUTTON_LEFT:
 		clear_wool()
 
 func clear_wool():
@@ -101,6 +111,11 @@ func clear_wool():
 
 func set_random_target():
 	nav_agent.target_position = global_position + Vector2(rng.randf_range(-1, 1), rng.randf_range(-1, 1)) * 50.0
+
+func on_birth():
+	nav_agent.target_position = finish_point_a
+	can_shear = false
+	just_birth = true
 
 func _on_mouse_entered():
 	mouse_on = true
