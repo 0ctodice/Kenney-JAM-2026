@@ -62,6 +62,8 @@ func _input(event):
 
 func clear_wool():
 	can_shear = false
+	particles.amount = int(wool.scale.x * 10)
+	particles.emitting = true
 	wool.scale = Vector2.ONE
 	collision_shape.scale = Vector2.ONE
 	collision_shape.global_position = wool_sprite.global_position
