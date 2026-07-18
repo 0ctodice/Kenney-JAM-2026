@@ -113,7 +113,7 @@ func title_screen_fade_in():
 func add_points(points: int):
 	if not stop_decounting:
 		score += points
-		timer += 1
+		timer += points / 8
 		points_label.text = str(score)
 		
 		# ANIMATING POINTS FX
@@ -132,7 +132,7 @@ func add_points(points: int):
 		# ANIMATING TIMER FX
 		timer_bonus_FX_label.global_position = timer_label.global_position
 		timer_bonus_FX_label.modulate = Color.TRANSPARENT
-		timer_bonus_FX_label.text = "+" + str(points / 4)
+		timer_bonus_FX_label.text = "+" + str(points / 8)
 
 		if timer_bonus_FX_tween:
 			timer_bonus_FX_tween.kill()
