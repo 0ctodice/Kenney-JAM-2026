@@ -3,11 +3,15 @@ extends Node2D
 @onready var pivot_1: Node2D = $Pivot1
 @onready var pivot_2: Node2D = $Pivot2
 
+@onready var audio_manager: AudioManager
+
 var tween: Tween
 var viewport_center: Vector2
 
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	audio_manager = get_tree().get_first_node_in_group("AudioManager")
 	viewport_center = get_viewport_rect().size / 2.0
 	Input.mouse_mode = Input.MOUSE_MODE_HIDDEN
 
@@ -20,6 +24,7 @@ func _process(_delta):
 func _input(event):
 	if event is InputEventMouseButton and event.button_index == MouseButton.MOUSE_BUTTON_LEFT:
 		if event.pressed:
+			audio_manager.play_shearing()
 			pivot_1.rotation_degrees -= 20.0
 			pivot_2.rotation_degrees += 20.0
 		else:

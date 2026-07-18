@@ -10,6 +10,11 @@
 [ext_resource type="Texture2D" uid="uid://md37cau2o46e" path="res://Asset/cursor-pack.png" id="7_ol2hl"]
 [ext_resource type="Texture2D" uid="uid://ql8p5wx017l1" path="res://Asset/Title.png" id="9_h7cfj"]
 [ext_resource type="Texture2D" uid="uid://bt5kv380ixtfd" path="res://Asset/mouse_icon.png" id="10_y56vo"]
+[ext_resource type="Script" uid="uid://4wpvfnaq800m" path="res://Script/audio_manager.gd" id="11_0gfnl"]
+[ext_resource type="AudioStream" uid="uid://d2bylirkiakis" path="res://Audio/beeeh_normal.wav" id="11_6a5p4"]
+[ext_resource type="AudioStream" uid="uid://bldqx0v413qtb" path="res://Audio/beeeh_bizarre.wav" id="12_nka0b"]
+[ext_resource type="AudioStream" uid="uid://c0j76klld7888" path="res://Audio/shearing.wav" id="14_kufhj"]
+[ext_resource type="AudioStream" uid="uid://b6gg3sar1f0vv" path="res://Audio/pop_4.wav" id="15_a6mvv"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_eae6q"]
 
@@ -601,6 +606,25 @@ offset_right = 230.0
 offset_bottom = 225.0
 text = "Click to start !"
 label_settings = SubResource("LabelSettings_kufhj")
+
+[node name="AudioManager" type="Node2D" parent="." unique_id=1247925625 groups=["AudioManager"]]
+script = ExtResource("11_0gfnl")
+
+[node name="BeeehNormal" type="AudioStreamPlayer" parent="AudioManager" unique_id=1747214508]
+stream = ExtResource("11_6a5p4")
+max_polyphony = 3
+
+[node name="BeeehBizarre" type="AudioStreamPlayer" parent="AudioManager" unique_id=328552845]
+stream = ExtResource("12_nka0b")
+max_polyphony = 3
+
+[node name="Shearing" type="AudioStreamPlayer" parent="AudioManager" unique_id=434082757]
+stream = ExtResource("14_kufhj")
+volume_db = -5.0
+
+[node name="Pop" type="AudioStreamPlayer" parent="AudioManager" unique_id=734708332]
+stream = ExtResource("15_a6mvv")
+volume_db = -5.0
 
 [connection signal="area_entered" from="BirthControlA" to="BirthControlA" method="_on_area_entered"]
 [connection signal="area_entered" from="BirthControlB" to="BirthControlB" method="_on_area_entered"]

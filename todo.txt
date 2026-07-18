@@ -5,7 +5,7 @@
 - ajouter le compteur de point : DONE
 - UI : DONE
 - Ecran titre (Titre + Click to start) : DONE
-- Sound Design
+- Sound Design : DONE
 - Music
 - Audio buttons
 - Highscore + sa sauvegarde
@@ -14,8 +14,6 @@
 
 Sounds design :
 
-- bruits de ciseaux
-- beeeeeeh (plusieurs variations)
-- beeeeeeh avant explosion
-- bruit d'explosion (POP)
-- bruits de pas
+- bruits de ciseaux : DONE
+- beeeeeeh (plusieurs variations) : DONE
+- bruit d'explosion (POP) : DONE

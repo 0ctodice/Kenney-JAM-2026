@@ -16,7 +16,7 @@ signal game_started
 
 const INIT_TIMER_COUNT = 61
 
-var total: int = 0
+var score: int = 0
 var timer: int = INIT_TIMER_COUNT
 
 var buffer: float = 0
@@ -59,6 +59,7 @@ func _process(delta):
 func _input(event):
 	if can_click and event is InputEventMouseButton and event.button_index == MouseButton.MOUSE_BUTTON_LEFT:
 		timer = INIT_TIMER_COUNT
+		save_and_clear_score()
 		if title_tween:
 			title_tween.kill()
 
@@ -100,9 +101,9 @@ func title_screen_fade_in():
 
 func add_points(points: int):
 	if not stop_decounting:
-		total += points
+		score += points
 		timer += points / 4
-		points_label.text = str(total)
+		points_label.text = str(score)
 		
 		# ANIMATING POINTS FX
 		points_FX_label.global_position = points_label.global_position
@@ -152,3 +153,7 @@ func remove_time():
 		timer_malus_FX_tween.parallel().tween_property(timer_malus_FX_label, "global_position", timer_malus_FX_label.global_position + Vector2.UP * 20, 0.25)
 		timer_malus_FX_tween.chain().tween_property(timer_malus_FX_label, "global_position", timer_malus_FX_label.global_position + Vector2.UP * 100, 1)
 		timer_malus_FX_tween.parallel().tween_property(timer_malus_FX_label, "modulate", Color.TRANSPARENT, 1)
+
+func save_and_clear_score():
+	score = 0
+	points_label.text = "0"

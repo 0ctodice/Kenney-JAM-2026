@@ -16,6 +16,8 @@ class_name Sheep
 
 @onready var nav_agent: NavigationAgent2D = $NavigationAgent2D
 
+@onready var audio_manager: AudioManager
+
 var mouse_on: bool = false
 var can_shear: bool = true
 var can_walk: bool = true
@@ -38,6 +40,7 @@ var game_over: bool = false
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	rng = RandomNumberGenerator.new()
+	audio_manager = get_tree().get_first_node_in_group("AudioManager")
 	speed_factor = rng.randf_range(2.0, 5.0)
 	set_random_target()
 	walk_timer.timeout.connect(func(): can_walk = true)
@@ -52,6 +55,7 @@ func _process(delta):
 		collision_shape.global_position = wool_sprite.global_position
 
 	if wool.scale.x >= plastic_limit and can_shear:
+		audio_manager.play_pop()
 		clear_wool()
 		wool.visible = false
 		feet_01.visible = false
@@ -108,6 +112,7 @@ func _input(event):
 		clear_wool()
 
 func clear_wool():
+	random_beeeh()
 	can_shear = false
 	particles.amount = int(wool.scale.x * 10)
 	particles.emitting = true
@@ -118,7 +123,6 @@ func clear_wool():
 	nav_agent.target_position = finish_point_a
 	can_walk = false
 	walk_timer.start(rng.randf_range(0.5, 2.0))
-
 
 func set_random_target():
 	nav_agent.target_position = global_position + Vector2(rng.randf_range(-1, 1), rng.randf_range(-1, 1)) * 50.0
@@ -142,3 +146,10 @@ func _on_mouse_entered():
 
 func _on_mouse_exited():
 	mouse_on = false
+
+func random_beeeh():
+	var beeeh_type: int = rng.randi_range(0, 20)
+	if beeeh_type < 19:
+		audio_manager.play_random_beeeh_normal()
+	else:
+		audio_manager.play_random_beeeh_bizarre()
