@@ -11,7 +11,7 @@ var rng: RandomNumberGenerator
 func _ready():
 	rng = RandomNumberGenerator.new()
 	timer.timeout.connect(create_sheep)
-	timer.start(rng.randf_range(1.0, 3.0))
+	timer.start(rng.randf_range(0.5, 3.0))
 
 func create_sheep():
 	var add_sheep = func():
@@ -21,7 +21,7 @@ func create_sheep():
 		sheep.on_birth(finish_point_a.global_position, finish_point_b.global_position)
 			
 	add_sheep.call_deferred()
-	timer.start(rng.randf_range(1.0, 5.0))
+	timer.start(rng.randf_range(0.5, 3.0))
 
 
 func _on_area_entered(area):

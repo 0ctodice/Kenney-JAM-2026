@@ -5,6 +5,9 @@
 [ext_resource type="PackedScene" uid="uid://cqgv27dr0nk4y" path="res://Scene/sheep.tscn" id="2_dlwip"]
 [ext_resource type="Script" uid="uid://c21u41xj6a4dg" path="res://Script/birth_control.gd" id="3_ejll3"]
 [ext_resource type="Script" uid="uid://ctq3ng5fapp04" path="res://Script/ui.gd" id="5_pcvp0"]
+[ext_resource type="FontFile" uid="uid://bm0mq0gjwtr52" path="res://Asset/Galindo-Regular.ttf" id="6_37axr"]
+[ext_resource type="Texture2D" uid="uid://dyoohw2eyjtpc" path="res://Asset/sheep_icon.png" id="7_ddf65"]
+[ext_resource type="Texture2D" uid="uid://md37cau2o46e" path="res://Asset/cursor-pack.png" id="7_ol2hl"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_eae6q"]
 
@@ -13,6 +16,87 @@ vertices = PackedVector2Array(262, 134, 58, 134, 58, 42, 262, 42)
 polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3)])
 outlines = Array[PackedVector2Array]([PackedVector2Array(48, 32, 272, 32, 272, 144, 48, 144)])
 border_size = 100.0
+
+[sub_resource type="LabelSettings" id="LabelSettings_ddf65"]
+font = ExtResource("6_37axr")
+font_color = Color(0.29411766, 0.6745098, 0.7764706, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_ol2hl"]
+font = ExtResource("6_37axr")
+outline_size = 4
+outline_color = Color(0.24705882, 0.14901961, 0.19215687, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_h7cfj"]
+font = ExtResource("6_37axr")
+font_color = Color(0.78, 0.29639998, 0.29639998, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_y56vo"]
+font = ExtResource("6_37axr")
+font_color = Color(0.29411766, 0.6745098, 0.7764706, 1)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ddf65"]
+atlas = ExtResource("7_ol2hl")
+region = Rect2(144, 144, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_h7cfj"]
+atlas = ExtResource("7_ol2hl")
+region = Rect2(160, 144, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_y56vo"]
+atlas = ExtResource("7_ol2hl")
+region = Rect2(176, 144, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6a5p4"]
+atlas = ExtResource("7_ol2hl")
+region = Rect2(192, 144, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_a6mvv"]
+atlas = ExtResource("7_ol2hl")
+region = Rect2(256, 144, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kufhj"]
+atlas = ExtResource("7_ol2hl")
+region = Rect2(240, 144, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nka0b"]
+atlas = ExtResource("7_ol2hl")
+region = Rect2(208, 144, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0gfnl"]
+atlas = ExtResource("7_ol2hl")
+region = Rect2(224, 144, 16, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_eae6q"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ddf65")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_h7cfj")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_y56vo")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6a5p4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_a6mvv")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_kufhj")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_nka0b")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0gfnl")
+}],
+"loop": 1,
+"name": &"default",
+"speed": 4.0
+}]
 
 [node name="World" type="Node2D" unique_id=913504707]
 
@@ -91,23 +175,68 @@ offset_right = 40.0
 offset_bottom = 40.0
 script = ExtResource("5_pcvp0")
 
+[node name="PointsFX" type="Label" parent="UI" unique_id=396836708]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 0
+offset_left = 184.0
+offset_top = 160.0
+offset_right = 264.0
+offset_bottom = 183.0
+text = "0"
+label_settings = SubResource("LabelSettings_ddf65")
+horizontal_alignment = 2
+
 [node name="Points" type="Label" parent="UI" unique_id=1086885452]
 layout_mode = 0
-offset_top = 157.0
-offset_right = 133.0
-offset_bottom = 180.0
-text = "WOOL POINTS : 0"
+offset_left = 184.0
+offset_top = 160.0
+offset_right = 264.0
+offset_bottom = 183.0
+text = "0"
+label_settings = SubResource("LabelSettings_ol2hl")
+horizontal_alignment = 2
+
+[node name="SheepSPrite" type="Sprite2D" parent="UI/Points" unique_id=593416858]
+position = Vector2(90, 11)
+texture = ExtResource("7_ddf65")
+
+[node name="TimerMalusFX" type="Label" parent="UI" unique_id=1142200995]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 0
+offset_left = 56.0
+offset_top = 160.0
+offset_right = 222.0
+offset_bottom = 183.0
+text = "60"
+label_settings = SubResource("LabelSettings_h7cfj")
+vertical_alignment = 1
+
+[node name="TimerBonusFX" type="Label" parent="UI" unique_id=1935777395]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 0
+offset_left = 56.0
+offset_top = 160.0
+offset_right = 222.0
+offset_bottom = 183.0
+text = "60"
+label_settings = SubResource("LabelSettings_y56vo")
 vertical_alignment = 1
 
 [node name="Timer" type="Label" parent="UI" unique_id=57774508]
 layout_mode = 0
-offset_left = 134.0
-offset_top = 157.0
-offset_right = 320.0
-offset_bottom = 180.0
-text = "TIME : 60"
-horizontal_alignment = 2
+offset_left = 56.0
+offset_top = 160.0
+offset_right = 222.0
+offset_bottom = 183.0
+text = "60"
+label_settings = SubResource("LabelSettings_ol2hl")
 vertical_alignment = 1
+
+[node name="TimerSprite" type="AnimatedSprite2D" parent="UI/Timer" unique_id=1991425100]
+position = Vector2(-11, 10)
+sprite_frames = SubResource("SpriteFrames_eae6q")
+autoplay = "default"
+frame_progress = 0.5973202
 
 [connection signal="area_entered" from="BirthControlA" to="BirthControlA" method="_on_area_entered"]
 [connection signal="area_entered" from="BirthControlB" to="BirthControlB" method="_on_area_entered"]
