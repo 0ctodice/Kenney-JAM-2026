@@ -44,8 +44,8 @@ func _ready():
 	highscore_label_init_pos = highscore_label.global_position
 
 	game_over.connect(func():
-		save_highscore()
 		title_screen_fade_in()
+		save_highscore()
 	)
 	title_screen_fade_in()
 
@@ -113,7 +113,7 @@ func title_screen_fade_in():
 func add_points(points: int):
 	if not stop_decounting:
 		score += points
-		timer += points / 8
+		timer += points / 2
 		points_label.text = str(score)
 		
 		# ANIMATING POINTS FX
@@ -132,7 +132,7 @@ func add_points(points: int):
 		# ANIMATING TIMER FX
 		timer_bonus_FX_label.global_position = timer_label.global_position
 		timer_bonus_FX_label.modulate = Color.TRANSPARENT
-		timer_bonus_FX_label.text = "+" + str(points / 8)
+		timer_bonus_FX_label.text = "+" + str(points / 2)
 
 		if timer_bonus_FX_tween:
 			timer_bonus_FX_tween.kill()
@@ -144,6 +144,8 @@ func add_points(points: int):
 
 
 func remove_time():
+	if stop_decounting:
+		return
 	if timer <= punition:
 		timer = 0
 		timer_label.text = str(timer)

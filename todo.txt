@@ -8,7 +8,7 @@
 - Sound Design : DONE
 - Music
 - Highscore + sa sauvegarde : DONE
-- SplashScreens
+- SplashScreens : DONE
 - Décorer le niveau
 
 - PAGE ITCH
