@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://cxyt6gsth44yb"]
 
-[ext_resource type="Script" uid="uid://br8fco6ihtfvt" path="res://Script/octo_dice.gd" id="1_jdry8"]
+[ext_resource type="Script" uid="uid://bn7l4484jjkj7" path="res://Script/splashscreens.gd" id="1_jdry8"]
 [ext_resource type="Texture2D" uid="uid://7cjp8vr2go8b" path="res://Asset/logo base.png" id="2_ayctb"]
 [ext_resource type="Texture2D" uid="uid://b2rg4k7nmeuu7" path="res://Asset/JAM.png" id="3_1ftcr"]
 
