@@ -1,8 +1,9 @@
 - Ajouter un timer avant reproduction : DONE
 - Voir pour ne pas utiliser le nav agent pour entrer dans les granges : DONE
 - inverser les sprites selon la direction du mouton + polish le déplacement des moutons: DONE
+- Faire le cursor en mode cisaille : DONE
 - ajouter le compteur de point
-- spawn initial ?
-- Faire le cursor en mode cisaille
 - Le game over ? Nombre de moutons explosé ? faut de faire de l'ui ?
 - Ecran titre (Titre + Click to start)
+- Sound Design
+- Music

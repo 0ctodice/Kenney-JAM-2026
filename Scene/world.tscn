@@ -1,6 +1,7 @@
 [gd_scene format=4 uid="uid://dpglwftwpfxk"]
 
 [ext_resource type="TileSet" uid="uid://bxve4smgj54rp" path="res://Asset/tile_set.tres" id="1_emx41"]
+[ext_resource type="PackedScene" uid="uid://b37qfwjijsi7o" path="res://Scene/shear.tscn" id="1_scul4"]
 [ext_resource type="PackedScene" uid="uid://cqgv27dr0nk4y" path="res://Scene/sheep.tscn" id="2_dlwip"]
 [ext_resource type="Script" uid="uid://c21u41xj6a4dg" path="res://Script/birth_control.gd" id="3_ejll3"]
 
@@ -14,6 +15,9 @@ border_size = 100.0
 
 [node name="World" type="Node2D" unique_id=913504707]
 
+[node name="Shear" parent="." unique_id=1624821069 instance=ExtResource("1_scul4")]
+z_index = 3
+
 [node name="BirthControlA" type="Area2D" parent="." unique_id=1467431638]
 position = Vector2(216, -16)
 script = ExtResource("3_ejll3")
@@ -21,14 +25,13 @@ sheep_scene = ExtResource("2_dlwip")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="BirthControlA" unique_id=848440865]
 shape = SubResource("CircleShape2D_eae6q")
-metadata/_edit_lock_ = true
 
 [node name="Timer" type="Timer" parent="BirthControlA" unique_id=2085195197]
 wait_time = 2.33
 one_shot = true
 
 [node name="FinishPointA" type="Node2D" parent="BirthControlA" unique_id=1623366748]
-position = Vector2(0, 80)
+position = Vector2(0, 114)
 
 [node name="FinishPointB" type="Node2D" parent="BirthControlA" unique_id=1822688459]
 
@@ -39,14 +42,13 @@ sheep_scene = ExtResource("2_dlwip")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="BirthControlB" unique_id=505328740]
 shape = SubResource("CircleShape2D_eae6q")
-metadata/_edit_lock_ = true
 
 [node name="Timer" type="Timer" parent="BirthControlB" unique_id=468883167]
 wait_time = 1.65
 one_shot = true
 
 [node name="FinishPointA" type="Node2D" parent="BirthControlB" unique_id=1277080036]
-position = Vector2(0, 80)
+position = Vector2(0, 114)
 
 [node name="FinishPointB" type="Node2D" parent="BirthControlB" unique_id=1732028925]
 
@@ -74,6 +76,7 @@ tile_set = ExtResource("1_emx41")
 metadata/_edit_lock_ = true
 
 [node name="NavigationRegion2D" type="NavigationRegion2D" parent="." unique_id=1531988442]
+visible = false
 navigation_polygon = SubResource("NavigationPolygon_eae6q")
 metadata/_edit_lock_ = true
 

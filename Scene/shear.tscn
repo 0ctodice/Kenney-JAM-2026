@@ -1,0 +1,23 @@
+[gd_scene format=3 uid="uid://b37qfwjijsi7o"]
+
+[ext_resource type="Script" uid="uid://bqbf3re8m2h6k" path="res://Script/shear.gd" id="1_cl4ai"]
+[ext_resource type="Texture2D" uid="uid://dhsjnxi6kay3r" path="res://Asset/shear.png" id="1_t7e65"]
+
+[node name="Shear" type="Node2D" unique_id=1664780213]
+scale = Vector2(0.5, 0.5)
+script = ExtResource("1_cl4ai")
+
+[node name="Pivot1" type="Node2D" parent="." unique_id=747951981]
+rotation = -1.3089969
+
+[node name="Sprite2D" type="Sprite2D" parent="Pivot1" unique_id=1105615624]
+position = Vector2(-6, 0)
+texture = ExtResource("1_t7e65")
+
+[node name="Pivot2" type="Node2D" parent="." unique_id=303979126]
+rotation = -1.8325958
+
+[node name="Sprite2D2" type="Sprite2D" parent="Pivot2" unique_id=296628631]
+position = Vector2(6, 0)
+scale = Vector2(-1, 1)
+texture = ExtResource("1_t7e65")

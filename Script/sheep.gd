@@ -73,8 +73,6 @@ func _process(delta):
 	
 		if can_shear:
 			if !nav_agent.is_target_reachable() or nav_agent.is_target_reached():
-				if just_birth:
-					just_birth = false
 				set_random_target()
 				can_walk = false
 				walk_timer.start(rng.randf_range(0.5, 2.0))
@@ -86,6 +84,8 @@ func _process(delta):
 					else:
 						set_random_target()
 						can_shear = true
+						if just_birth:
+							just_birth = false
 					
 		if !nav_agent.is_target_reached() and can_walk and not go_back_home:
 			var last_global_position = global_position
