@@ -2,6 +2,7 @@ extends Control
 class_name UI
 
 signal game_over
+signal game_started
 
 @onready var points_label: Label = $Points
 @onready var points_FX_label: Label = $PointsFX
@@ -9,21 +10,43 @@ signal game_over
 @onready var timer_malus_FX_label: Label = $TimerMalusFX
 @onready var timer_bonus_FX_label: Label = $TimerBonusFX
 
+@onready var title_screen: Sprite2D = $TitleScreen
+@onready var click_sprite: AnimatedSprite2D = $ClickSprite
+@onready var click_label: Label = $Click
+
+const INIT_TIMER_COUNT = 61
+
 var total: int = 0
-var timer: int = 60
+var timer: int = INIT_TIMER_COUNT
 
 var buffer: float = 0
 var punition: int = int(exp(4))
 
 var stop_decounting: bool = false
+var game_start: bool = false
+var can_click: bool = false
 
 var points_FX_tween: Tween
 var timer_malus_FX_tween: Tween
 var timer_bonus_FX_tween: Tween
+var title_tween: Tween
 
+var title_screen_init_pos: Vector2
+var click_sprite_init_pos: Vector2
+var click_label_init_pos: Vector2
+
+func _ready():
+	title_screen_init_pos = title_screen.global_position
+	click_sprite_init_pos = click_sprite.global_position
+	click_label_init_pos = click_label.global_position
+
+	game_over.connect(title_screen_fade_in)
+	title_screen_fade_in()
+
+	
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	if not stop_decounting:
+	if not stop_decounting and game_start:
 		buffer += delta
 		if buffer > +1.0:
 			buffer = 0
@@ -32,6 +55,48 @@ func _process(delta):
 			if timer <= 0:
 				game_over.emit()
 				stop_decounting = true
+
+func _input(event):
+	if can_click and event is InputEventMouseButton and event.button_index == MouseButton.MOUSE_BUTTON_LEFT:
+		timer = INIT_TIMER_COUNT
+		if title_tween:
+			title_tween.kill()
+
+		title_tween = create_tween()
+		title_tween.parallel().tween_property(title_screen, "modulate", Color.TRANSPARENT, 1)
+		title_tween.parallel().tween_property(click_sprite, "modulate", Color.TRANSPARENT, 1)
+		title_tween.parallel().tween_property(click_label, "modulate", Color.TRANSPARENT, 1)
+
+		can_click = false
+
+		var sheeps: Node2D = get_tree().get_first_node_in_group("Sheeps")
+		for sheep in sheeps.get_children():
+			sheeps.remove_child(sheep)
+			sheep.queue_free()
+
+		title_tween.finished.connect(func():
+			game_started.emit()
+			game_start = true
+			stop_decounting = false
+			title_screen.global_position = title_screen_init_pos
+			click_sprite.global_position = click_sprite_init_pos
+			click_label.global_position = click_label_init_pos
+		)
+
+func title_screen_fade_in():
+	if title_tween:
+		title_tween.kill()
+
+	title_tween = create_tween()
+	title_tween.set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_CUBIC)
+	title_tween.tween_property(title_screen, "global_position", Vector2(160, 78.5), 1)
+	title_tween.parallel().tween_property(click_sprite, "global_position", Vector2(96, 135), 1)
+	title_tween.parallel().tween_property(click_label, "global_position", Vector2(107, 125), 1)
+	title_tween.parallel().tween_property(title_screen, "modulate", Color.WHITE, 1)
+	title_tween.parallel().tween_property(click_sprite, "modulate", Color.WHITE, 1)
+	title_tween.parallel().tween_property(click_label, "modulate", Color.WHITE, 1)
+
+	title_tween.finished.connect(func(): can_click = true)
 
 func add_points(points: int):
 	if not stop_decounting:

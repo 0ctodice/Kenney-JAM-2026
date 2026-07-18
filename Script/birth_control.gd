@@ -7,13 +7,23 @@ extends Area2D
 
 var rng: RandomNumberGenerator
 
+var game_over: bool = false
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	rng = RandomNumberGenerator.new()
 	timer.timeout.connect(create_sheep)
-	timer.start(rng.randf_range(0.5, 3.0))
+
+	get_tree().get_first_node_in_group("UI").game_over.connect(func(): game_over = true)
+	get_tree().get_first_node_in_group("UI").game_started.connect(func():
+		game_over = false
+		timer.start(rng.randf_range(0.5, 3.0))
+	)
 
 func create_sheep():
+	if game_over:
+		return
+
 	var add_sheep = func():
 		var sheep: Sheep = sheep_scene.instantiate()
 		sheep.global_position = global_position + Vector2.DOWN * 26

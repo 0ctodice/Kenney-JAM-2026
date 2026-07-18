@@ -59,6 +59,7 @@ position = Vector2(5, -7)
 texture = ExtResource("2_q7b17")
 
 [node name="Particles" type="CPUParticles2D" parent="." unique_id=1664853699]
+z_index = 4
 position = Vector2(0, -5)
 emitting = false
 amount = 30

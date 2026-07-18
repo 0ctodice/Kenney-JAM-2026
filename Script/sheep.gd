@@ -22,7 +22,7 @@ var can_walk: bool = true
 var just_birth: bool = false
 var go_back_home: bool = false
 var speed_factor: float = 1.0
-var elastic_limit: float = 3.0
+var elastic_limit: float = 3.5
 var plastic_limit: float = 4.0
 
 var timing_head_idle: float = 0.0
@@ -33,12 +33,15 @@ var rng: RandomNumberGenerator
 var finish_point_a: Vector2
 var finish_point_b: Vector2
 
+var game_over: bool = false
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	rng = RandomNumberGenerator.new()
 	speed_factor = rng.randf_range(2.0, 5.0)
 	set_random_target()
 	walk_timer.timeout.connect(func(): can_walk = true)
+	get_tree().get_first_node_in_group("UI").game_over.connect(func(): game_over = true)
 		
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
@@ -100,7 +103,7 @@ func _process(delta):
 		
 
 func _input(event):
-	if mouse_on and can_shear and not just_birth and event is InputEventMouseButton and event.button_index == MouseButton.MOUSE_BUTTON_LEFT:
+	if not game_over and mouse_on and can_shear and not just_birth and event is InputEventMouseButton and event.button_index == MouseButton.MOUSE_BUTTON_LEFT:
 		get_tree().get_first_node_in_group("UI").add_points(int(exp(wool.scale.x)))
 		clear_wool()
 
