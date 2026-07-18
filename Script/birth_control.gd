@@ -11,11 +11,7 @@ var rng: RandomNumberGenerator
 func _ready():
 	rng = RandomNumberGenerator.new()
 	timer.timeout.connect(create_sheep)
-	timer.start(rng.randf_range(1.0, 5.0))
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
-	pass
+	timer.start(rng.randf_range(1.0, 3.0))
 
 func create_sheep():
 	var add_sheep = func():

@@ -57,6 +57,7 @@ func _process(delta):
 		collision_shape.visible = false
 		particles.finished.connect(queue_free.call_deferred)
 		particles.emitting = true
+		get_tree().get_first_node_in_group("UI").remove_time()
 	elif wool.scale.x >= elastic_limit and can_shear:
 		wool.position = lerp(wool.position, Vector2(rng.randf_range(-1, 1), 0) * wool.scale.x, 0.1)
 		if tween:
@@ -100,6 +101,7 @@ func _process(delta):
 
 func _input(event):
 	if mouse_on and can_shear and not just_birth and event is InputEventMouseButton and event.button_index == MouseButton.MOUSE_BUTTON_LEFT:
+		get_tree().get_first_node_in_group("UI").add_points(int(exp(wool.scale.x)))
 		clear_wool()
 
 func clear_wool():
