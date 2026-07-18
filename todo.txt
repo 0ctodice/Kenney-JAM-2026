@@ -1,6 +1,6 @@
-- Ajouter un timer avant reproduction
-- Voir pour ne pas utiliser le nav agent pour entrer dans les granges
-- inverser les sprites selon la direction du mouton
+- Ajouter un timer avant reproduction : DONE
+- Voir pour ne pas utiliser le nav agent pour entrer dans les granges : DONE
+- inverser les sprites selon la direction du mouton + polish le déplacement des moutons: DONE
 - ajouter le compteur de point
 - spawn initial ?
 - Faire le cursor en mode cisaille

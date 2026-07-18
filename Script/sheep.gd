@@ -20,6 +20,7 @@ var mouse_on: bool = false
 var can_shear: bool = true
 var can_walk: bool = true
 var just_birth: bool = false
+var go_back_home: bool = false
 var speed_factor: float = 1.0
 var elastic_limit: float = 3.0
 var plastic_limit: float = 4.0
@@ -38,13 +39,6 @@ func _ready():
 	speed_factor = rng.randf_range(2.0, 5.0)
 	set_random_target()
 	walk_timer.timeout.connect(func(): can_walk = true)
-
-	if rng.randf() <= 0.5:
-		finish_point_a = $"/root/World/FinishPointA".global_position
-		finish_point_b = $"/root/World/FinishPointB".global_position
-	else:
-		finish_point_a = $"/root/World/FinishPointC".global_position
-		finish_point_b = $"/root/World/FinishPointD".global_position
 		
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
@@ -65,6 +59,9 @@ func _process(delta):
 		particles.emitting = true
 	elif wool.scale.x >= elastic_limit and can_shear:
 		wool.position = lerp(wool.position, Vector2(rng.randf_range(-1, 1), 0) * wool.scale.x, 0.1)
+		if tween:
+			tween.kill()
+			rotation_degrees = 0
 	else:
 		timing_head_idle += delta
 		if timing_head_idle >= 0.5:
@@ -85,13 +82,21 @@ func _process(delta):
 			if nav_agent.is_target_reached():
 				if nav_agent.target_position == finish_point_a:
 					if not just_birth:
-						nav_agent.target_position = finish_point_b
+						go_back_home = true
 					else:
 						set_random_target()
 						can_shear = true
 					
-		if !nav_agent.is_target_reached() and can_walk:
-			global_position = lerp(global_position, nav_agent.get_next_path_position(), 0.005)
+		if !nav_agent.is_target_reached() and can_walk and not go_back_home:
+			var last_global_position = global_position
+			global_position = lerp(global_position, nav_agent.get_final_position(), 0.005)
+			var x_direction = sign(last_global_position.direction_to(global_position).normalized().x)
+			scale.x = 1 if x_direction >= 0 else -1
+		elif go_back_home:
+			global_position = lerp(global_position, finish_point_b, 0.005)
+
+	animate_tween_movement()
+		
 
 func _input(event):
 	if mouse_on and can_shear and not just_birth and event is InputEventMouseButton and event.button_index == MouseButton.MOUSE_BUTTON_LEFT:
@@ -109,10 +114,20 @@ func clear_wool():
 	can_walk = false
 	walk_timer.start(rng.randf_range(0.5, 2.0))
 
+
 func set_random_target():
 	nav_agent.target_position = global_position + Vector2(rng.randf_range(-1, 1), rng.randf_range(-1, 1)) * 50.0
 
-func on_birth():
+func animate_tween_movement():
+	if not tween or not tween.is_valid():
+		tween = create_tween()
+		tween.set_loops()
+		tween.tween_property(self, "rotation_degrees", 5.0, 0.5)
+		tween.tween_property(self, "rotation_degrees", -5.0, 0.5)
+
+func on_birth(point_a: Vector2, point_b: Vector2):
+	finish_point_a = point_a
+	finish_point_b = point_b
 	nav_agent.target_position = finish_point_a
 	can_shear = false
 	just_birth = true
