@@ -105,6 +105,12 @@ animations = [{
 "speed": 4.0
 }]
 
+[sub_resource type="LabelSettings" id="LabelSettings_a6mvv"]
+font = ExtResource("6_37axr")
+font_size = 6
+outline_size = 4
+outline_color = Color(0.24705882, 0.14901961, 0.19215687, 1)
+
 [sub_resource type="AtlasTexture" id="AtlasTexture_s81y4"]
 atlas = ExtResource("10_y56vo")
 region = Rect2(0, 0, 16, 16)
@@ -580,6 +586,18 @@ position = Vector2(-11, 10)
 sprite_frames = SubResource("SpriteFrames_eae6q")
 autoplay = "default"
 frame_progress = 0.4115584
+
+[node name="Highscore" type="Label" parent="UI" unique_id=903792346]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 0
+offset_left = 36.0
+offset_top = 160.0
+offset_right = 283.0
+offset_bottom = 183.0
+text = "HIGHSCORE : 0"
+label_settings = SubResource("LabelSettings_a6mvv")
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="TitleScreen" type="Sprite2D" parent="UI" unique_id=695020166]
 modulate = Color(1, 1, 1, 0)

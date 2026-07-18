@@ -7,13 +7,16 @@
 - Ecran titre (Titre + Click to start) : DONE
 - Sound Design : DONE
 - Music
-- Audio buttons
-- Highscore + sa sauvegarde
+- Highscore + sa sauvegarde : DONE
 - SplashScreens
 - Décorer le niveau
+
+- PAGE ITCH
 
 Sounds design :
 
 - bruits de ciseaux : DONE
 - beeeeeeh (plusieurs variations) : DONE
 - bruit d'explosion (POP) : DONE
+
+bruit de ciseau et POP : https://ci.itch.io/400-sounds-pack

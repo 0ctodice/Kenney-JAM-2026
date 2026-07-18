@@ -17,7 +17,7 @@ func _ready():
 	get_tree().get_first_node_in_group("UI").game_over.connect(func(): game_over = true)
 	get_tree().get_first_node_in_group("UI").game_started.connect(func():
 		game_over = false
-		timer.start(rng.randf_range(0.5, 3.0))
+		timer.start(rng.randf_range(0.5, 2.5))
 	)
 
 func create_sheep():
@@ -31,7 +31,7 @@ func create_sheep():
 		sheep.on_birth(finish_point_a.global_position, finish_point_b.global_position)
 			
 	add_sheep.call_deferred()
-	timer.start(rng.randf_range(0.5, 3.0))
+	timer.start(rng.randf_range(0.5, 2.5))
 
 
 func _on_area_entered(area):

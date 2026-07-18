@@ -13,6 +13,7 @@ signal game_started
 @onready var title_screen: Sprite2D = $TitleScreen
 @onready var click_sprite: AnimatedSprite2D = $ClickSprite
 @onready var click_label: Label = $Click
+@onready var highscore_label: Label = $Highscore
 
 const INIT_TIMER_COUNT = 61
 
@@ -20,7 +21,7 @@ var score: int = 0
 var timer: int = INIT_TIMER_COUNT
 
 var buffer: float = 0
-var punition: int = int(exp(4))
+var punition: int = int(exp(4)) * 3 / 4
 
 var stop_decounting: bool = false
 var game_start: bool = false
@@ -34,13 +35,18 @@ var title_tween: Tween
 var title_screen_init_pos: Vector2
 var click_sprite_init_pos: Vector2
 var click_label_init_pos: Vector2
+var highscore_label_init_pos: Vector2
 
 func _ready():
 	title_screen_init_pos = title_screen.global_position
 	click_sprite_init_pos = click_sprite.global_position
 	click_label_init_pos = click_label.global_position
+	highscore_label_init_pos = highscore_label.global_position
 
-	game_over.connect(title_screen_fade_in)
+	game_over.connect(func():
+		save_highscore()
+		title_screen_fade_in()
+	)
 	title_screen_fade_in()
 
 	
@@ -59,7 +65,8 @@ func _process(delta):
 func _input(event):
 	if can_click and event is InputEventMouseButton and event.button_index == MouseButton.MOUSE_BUTTON_LEFT:
 		timer = INIT_TIMER_COUNT
-		save_and_clear_score()
+		score = 0
+		points_label.text = "0"
 		if title_tween:
 			title_tween.kill()
 
@@ -67,6 +74,7 @@ func _input(event):
 		title_tween.parallel().tween_property(title_screen, "modulate", Color.TRANSPARENT, 1)
 		title_tween.parallel().tween_property(click_sprite, "modulate", Color.TRANSPARENT, 1)
 		title_tween.parallel().tween_property(click_label, "modulate", Color.TRANSPARENT, 1)
+		title_tween.parallel().tween_property(highscore_label, "modulate", Color.TRANSPARENT, 1)
 
 		can_click = false
 
@@ -88,6 +96,8 @@ func title_screen_fade_in():
 	if title_tween:
 		title_tween.kill()
 
+	highscore_label.text = "HIGHSCORE : " + str(get_highscore())
+
 	title_tween = create_tween()
 	title_tween.set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_CUBIC)
 	title_tween.tween_property(title_screen, "global_position", Vector2(160, 78.5), 1)
@@ -96,13 +106,14 @@ func title_screen_fade_in():
 	title_tween.parallel().tween_property(title_screen, "modulate", Color.WHITE, 1)
 	title_tween.parallel().tween_property(click_sprite, "modulate", Color.WHITE, 1)
 	title_tween.parallel().tween_property(click_label, "modulate", Color.WHITE, 1)
+	title_tween.chain().tween_property(highscore_label, "modulate", Color.WHITE, 1)
 
 	title_tween.finished.connect(func(): can_click = true)
 
 func add_points(points: int):
 	if not stop_decounting:
 		score += points
-		timer += points / 4
+		timer += 1
 		points_label.text = str(score)
 		
 		# ANIMATING POINTS FX
@@ -154,6 +165,28 @@ func remove_time():
 		timer_malus_FX_tween.chain().tween_property(timer_malus_FX_label, "global_position", timer_malus_FX_label.global_position + Vector2.UP * 100, 1)
 		timer_malus_FX_tween.parallel().tween_property(timer_malus_FX_label, "modulate", Color.TRANSPARENT, 1)
 
-func save_and_clear_score():
-	score = 0
-	points_label.text = "0"
+func get_highscore():
+	var highscore: int = 0
+	if FileAccess.file_exists("user://savegame.save"):
+		var save_file = FileAccess.open("user://savegame.save", FileAccess.READ)
+		while save_file.get_position() < save_file.get_length():
+			var json_string = save_file.get_line()
+			var json = JSON.new()
+			var parse_result = json.parse(json_string)
+			if not parse_result == OK:
+				print("JSON Parse Error: ", json.get_error_message(), " in ", json_string, " at line ", json.get_error_line())
+				continue
+
+			# Get the data from the JSON object.
+			var node_data = json.data
+			highscore = node_data["highscore"]
+	return highscore
+				
+func save_highscore():
+	if get_highscore() < score:
+		var save_file = FileAccess.open("user://savegame.save", FileAccess.WRITE)
+		var node_data = {"highscore": score}
+		var json_string = JSON.stringify(node_data)
+
+		# Store the save dictionary as a new line in the save file.
+		save_file.store_line(json_string)
