@@ -8,6 +8,8 @@ extends Area2D
 var rng: RandomNumberGenerator
 
 var game_over: bool = false
+var difficulty_level: int = 1
+var difficulty_timer: float = 0
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -20,15 +22,23 @@ func _ready():
 		timer.start(rng.randf_range(0.5, 2.5))
 	)
 
+func _process(delta):
+	difficulty_timer += delta
+	if difficulty_timer >= 25.0:
+		print("CHANGING DIFFICULTY")
+		difficulty_level += 1
+		difficulty_timer = 0
+
 func create_sheep():
 	if game_over:
 		return
 
 	var add_sheep = func():
-		var sheep: Sheep = sheep_scene.instantiate()
-		sheep.global_position = global_position + Vector2.DOWN * 26
-		get_tree().get_first_node_in_group("Sheeps").add_child(sheep)
-		sheep.on_birth(finish_point_a.global_position, finish_point_b.global_position)
+		for i in range(0, rng.randf_range(1, difficulty_level)):
+			var sheep: Sheep = sheep_scene.instantiate()
+			sheep.global_position = global_position + Vector2.DOWN * 26
+			get_tree().get_first_node_in_group("Sheeps").add_child(sheep)
+			sheep.on_birth(finish_point_a.global_position, finish_point_b.global_position)
 			
 	add_sheep.call_deferred()
 	timer.start(rng.randf_range(0.5, 2.5))

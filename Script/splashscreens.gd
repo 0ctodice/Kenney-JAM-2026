@@ -21,3 +21,8 @@ func _ready():
 	tween.parallel().tween_property(jam, "scale", Vector2.ONE * 0.5, splash_speed)
 
 	tween.finished.connect(func(): get_tree().change_scene_to_file("res://Scene/world.tscn"))
+
+func _input(event):
+	if event is InputEventMouseButton and event.button_index == MouseButton.MOUSE_BUTTON_LEFT:
+		if not event.pressed:
+			get_tree().change_scene_to_file("res://Scene/world.tscn")

@@ -516,7 +516,7 @@ wait_time = 2.33
 one_shot = true
 
 [node name="FinishPointA" type="Node2D" parent="BirthControlA" unique_id=1623366748]
-position = Vector2(0, 114)
+position = Vector2(0, 88)
 
 [node name="FinishPointB" type="Node2D" parent="BirthControlA" unique_id=1822688459]
 
@@ -533,7 +533,7 @@ wait_time = 1.65
 one_shot = true
 
 [node name="FinishPointA" type="Node2D" parent="BirthControlB" unique_id=1277080036]
-position = Vector2(0, 114)
+position = Vector2(0, 88)
 
 [node name="FinishPointB" type="Node2D" parent="BirthControlB" unique_id=1732028925]
 
