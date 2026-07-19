@@ -6,12 +6,12 @@
 - UI : DONE
 - Ecran titre (Titre + Click to start) : DONE
 - Sound Design : DONE
-- Music
 - Highscore + sa sauvegarde : DONE
 - SplashScreens : DONE
+- Music : DONE
 - Décorer le niveau
-
 - PAGE ITCH
+
 
 Sounds design :
 
@@ -20,3 +20,4 @@ Sounds design :
 - bruit d'explosion (POP) : DONE
 
 bruit de ciseau et POP : https://ci.itch.io/400-sounds-pack
+music : https://xdeviruchi.itch.io/16-bit-fantasy-adventure-music-pack

@@ -43,7 +43,12 @@ func _ready():
 	audio_manager = get_tree().get_first_node_in_group("AudioManager")
 	speed_factor = rng.randf_range(2.0, 5.0)
 	set_random_target()
-	walk_timer.timeout.connect(func(): can_walk = true)
+	walk_timer.timeout.connect(func():
+		can_walk = true
+		var should_play_step = [true, false]
+		if should_play_step[rng.rand_weighted([1, 3])]:
+			audio_manager.play_step()
+	)
 	get_tree().get_first_node_in_group("UI").game_over.connect(func(): game_over = true)
 		
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -94,6 +99,8 @@ func _process(delta):
 						can_shear = true
 						if just_birth:
 							just_birth = false
+				else:
+					audio_manager.play_step()
 					
 		if !nav_agent.is_target_reached() and can_walk and not go_back_home:
 			var last_global_position = global_position

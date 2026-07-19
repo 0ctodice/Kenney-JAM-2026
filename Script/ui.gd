@@ -106,7 +106,7 @@ func title_screen_fade_in():
 	title_tween.parallel().tween_property(title_screen, "modulate", Color.WHITE, 1)
 	title_tween.parallel().tween_property(click_sprite, "modulate", Color.WHITE, 1)
 	title_tween.parallel().tween_property(click_label, "modulate", Color.WHITE, 1)
-	title_tween.chain().tween_property(highscore_label, "modulate", Color.WHITE, 1)
+	title_tween.chain().tween_property(highscore_label, "modulate", Color.WHITE, .5)
 
 	title_tween.finished.connect(func(): can_click = true)
 
